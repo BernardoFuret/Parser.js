@@ -58,7 +58,7 @@ class Parser {
 	 * @param {string} input - Content to parse.
 	 * @param {string|RegExp} delimiter - Content to parse.
 	 * @param {State} state - First State of the state chain.
-	 * @parse {boolean} verbose - If the parser should log messages.
+	 * @param {boolean} verbose - If the parser should log messages.
 	 */
 	constructor( input = "", delimiter = "", state = new State(), verbose = false ) {
 		// Unique ID:
@@ -229,6 +229,7 @@ class Parser {
 
 	/**
 	 * Checks if the Parser should log messages.
+	 * @returns {boolean}
 	 */ 
 	isVerbose() {
 		return this.verbose;
