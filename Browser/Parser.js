@@ -2,6 +2,7 @@
  * Main wrapper.
  */
 ( function _mainParserWrapper( window ) {
+"use strict";
 
 /**
  * @enum Iterator keys
