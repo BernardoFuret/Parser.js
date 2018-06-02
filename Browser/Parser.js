@@ -2,7 +2,30 @@
  * Parser namespace.
  * @external ParserState
  */
-const Parser = ( function _namespaceParser( window, ParserState ) {
+( factory => {
+	"use strict";
+
+	// CommonJS & Node.js:
+	if ( typeof module === "object" && typeof module.exports === "object" ) {
+		// Dependencies:
+		const { ParserState } = require( "./ParserState" );
+
+		// Apply to the «exports» object:
+		factory( exports, ParserState );
+	}
+
+	// AMD:
+	/*else if ( typeof define === "function" && define.amd ) {
+		define( "Parser", [ "ParserState" ], factory )
+	}*/
+
+	// Browser & Web Workers:
+	else {
+		// Apply to «window» or Web Workers' «self»:
+		factory( self, self.ParserState );
+	}
+
+} )( (exports, ParserState) => {
 "use strict";
 
 /**
@@ -227,7 +250,7 @@ class Parser {
 	 */
 	log( ...args ) {
 		if ( this.verbose ) {
-			window.console.log.apply( console, args );
+			console.log.apply( console, args );
 		}
 		return this;
 	}
@@ -255,6 +278,6 @@ class Parser {
 /**
  * @exports Parser
  */
-return Parser;
+exports.Parser = Parser;
 
-} )( window, window.ParserState );
+} );
