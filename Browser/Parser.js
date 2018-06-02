@@ -1,7 +1,7 @@
 /**
- * Main wrapper.
+ * Parser namespace.
  */
-( function _mainParserWrapper( window ) {
+( function _namespaceParser( window, ParserState ) {
 "use strict";
 
 /**
@@ -16,30 +16,6 @@ const Iterator = Object.freeze( {
 	LAST:  Symbol( "Iterator.Last" ),
 	END:   Symbol( "Iterator.End" )
 } );
-
-/**
- * @enum Parser statuses
- */
-/*const Status = Object.freeze( {
-	ON:  "[Status] On",
-	OFF: "[Status] Off"
-} );
-*/
-/**
- * @class Abstract State
- * @abstract
- */
-class State {
-
-	/**
-	 * Processes the token retrieved by the parser.
-	 * @abstract
-	 */
-	process() {
-		throw new Error( "Attempt to use abstract method «process» from class «State»!" );
-	}
-
-}
 
 /**
  * @class Parser
@@ -57,12 +33,12 @@ class Parser {
 	 * Parser constructor.
 	 * @param {string} input - Content to parse.
 	 * @param {string|RegExp} delimiter - Content to parse.
-	 * @param {State} state - First State of the state chain.
+	 * @param {ParserState} state - First State of the state chain.
 	 * @param {boolean} verbose - If the parser should log messages.
 	 */
-	constructor( input = "", delimiter = "", state = new State(), verbose = false ) {
+	constructor( input = "", delimiter = "", state = new ParserState(), verbose = false ) {
 		// Unique ID:
-		this.UID = new Date().toUTCString();
+		this.UID = new Date().toISOString(); // new Date().valueOf().toString( 36 );
 		
 		// Content to parse:
 		this.input = input;
@@ -211,7 +187,7 @@ class Parser {
 
 	/**
 	 * Sets the state.
-	 * @param {State} state - The new State of the Parser.
+	 * @param {ParserState} state - The new State of the Parser.
 	 */
 	setState( state ) {
 		this.state = state;
@@ -257,8 +233,10 @@ class Parser {
 
 	/**
 	 * Initiates and executes the Parser through its States.
+	 * @param {string} delimiter - The delimiter to merge the
+	 * @returns {string} - Parsed content.
 	 */
-	execute() {
+	execute( delimiter = this.delimiter ) {
 		// Set status as "on":
 		this.status = this.constructor.ON;
 
@@ -268,19 +246,14 @@ class Parser {
 		}
 		
 		// Return the State:
-		return this.state;
+		return this.buffer.join( delimiter );
 	}
 
 }
-
-/**
- * @exports State
- */
-window.State = State;
 
 /**
  * @exports Parser
  */
 window.Parser = Parser;
 
-} )( window );
+} )( window, window.ParserState );
