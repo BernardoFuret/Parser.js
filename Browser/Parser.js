@@ -1,7 +1,8 @@
 /**
  * Parser namespace.
+ * @external ParserState
  */
-( function _namespaceParser( window, ParserState ) {
+const Parser = ( function _namespaceParser( window, ParserState ) {
 "use strict";
 
 /**
@@ -254,6 +255,6 @@ class Parser {
 /**
  * @exports Parser
  */
-window.Parser = Parser;
+return Parser;
 
 } )( window, window.ParserState );
