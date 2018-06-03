@@ -16,7 +16,7 @@
 
 	// AMD:
 	/*else if ( typeof define === "function" && define.amd ) {
-		define( "Parser", [ "ParserState" ], factory )
+		define( "Parser", [ "ParserState" ], factory );
 	}*/
 
 	// Browser & Web Workers:
@@ -62,7 +62,7 @@ class Parser {
 	 */
 	constructor( input = "", delimiter = "", state = new ParserState(), verbose = false ) {
 		// Unique ID:
-		this.UID = new Date().toISOString(); // new Date().valueOf().toString( 36 );
+		this.UID = new Date().valueOf().toString( 36 );
 		
 		// Content to parse:
 		this.input = input;
@@ -77,7 +77,7 @@ class Parser {
 		this.status = this.constructor.OFF;
 
 		// State:
-		this.state = state;
+		this.state = this.initialState = state;
 
 		// Verbose:
 		this.verbose = Boolean( verbose );
@@ -208,6 +208,27 @@ class Parser {
 		return this.get( Iterator.LAST );
 	}
 	/** End Iterator interface. */
+
+	/**
+	 * Sets the text to be parsed. It also resets the Parser.
+	 * @param {string} input - New content to parse.
+	 */
+	setText( input = "" ) {		
+		// Content to parse:
+		this.input = input;
+
+		// Iterator:
+		this.iterator = null;
+
+		// State:
+		this.state = this.initialState;
+
+		// Parsed content:
+		this.buffer.length = 0;
+
+		// Allow method chaining:
+		return this;
+	}
 
 	/**
 	 * Sets the state.
