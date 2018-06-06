@@ -271,7 +271,7 @@ class Parser {
 	 */
 	log( ...args ) {
 		if ( this.verbose ) {
-			console.log.apply( console, args );
+			console.log( ...args );
 		}
 		return this;
 	}
